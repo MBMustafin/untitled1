@@ -1,5 +1,7 @@
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import ru.smak.chat.databaseimport.Matrices
+import ru.smak.chat.databaseimport.MatrixElements
 import java.sql.DriverManager
 
 fun uploadMatrix(
@@ -69,13 +71,20 @@ fun downloadMatrix(matrixNum: Int){
 }
 
 fun downloadAllMatrices(){
+    var array = mutableListOf<Int>()
     transaction{
         val id = Matrices.select(Matrices.id)
         id.forEach {
-            downloadMatrix(it[Matrices.id])
+            array.add(it[Matrices.id])
         }
+        commit()
     }
 
+    transaction {
+        array.forEach {
+            downloadMatrix(it)
+        }
+    }
 }
 
 

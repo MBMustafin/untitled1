@@ -1,4 +1,7 @@
+package ru.smak.chat.databaseimport
+
 import org.jetbrains.exposed.sql.Table
+
 
 object Matrices : Table() {
     val id = integer("id").autoIncrement() // Уникальный идентификатор матрицы
